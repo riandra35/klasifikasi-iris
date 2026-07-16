@@ -1,114 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<title>Iris Species Prediction</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-</head>
-
-<body>
-
-<div class="container py-5">
-
-<div class="row justify-content-center">
-
-<div class="col-lg-8">
-
-<div class="card shadow-lg border-0">
-
-<div class="card-header text-center bg-success text-white">
-
-<h2>🌸 Iris Flower Prediction</h2>
-
-<p class="mb-0">
-Machine Learning - KNN Classifier
-</p>
-
-</div>
-
-<div class="card-body">
-
-<div class="row">
-
-<div class="col-md-6">
-
-<label>Sepal Length</label>
-<input id="sl" class="form-control">
-
-</div>
-
-<div class="col-md-6">
-
-<label>Sepal Width</label>
-<input id="sw" class="form-control">
-
-</div>
-
-</div>
-
-<div class="row mt-3">
-
-<div class="col-md-6">
-
-<label>Petal Length</label>
-<input id="pl" class="form-control">
-
-</div>
-
-<div class="col-md-6">
-
-<label>Petal Width</label>
-<input id="pw" class="form-control">
-
-</div>
-
-</div>
-
-<div class="d-grid mt-4">
-
-<button id="predictBtn" class="btn btn-success btn-lg">
-
-Predict Species
-
-</button>
-
-</div>
-
-<hr>
-
-<div id="resultArea" style="display:none">
-
-<div class="alert alert-success">
-
-<h4 id="species"></h4>
-
-<p id="confidence"></p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script src="{{ url_for('static', filename='app.js') }}"></script>
-
-</body>
-
+  <head>
+    <meta charset="UTF-8">
+    <title>Iris Species Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow-lg border-0">
+            <div class="card-header text-center bg-success text-white">
+              <h2>🌸 Iris Flower Prediction</h2>
+              <p class="mb-0"> Machine Learning - KNN Classifier </p>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Sepal Length</label>
+                  <input id="sl" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label>Sepal Width</label>
+                  <input id="sw" class="form-control">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <label>Petal Length</label>
+                  <input id="pl" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label>Petal Width</label>
+                  <input id="pw" class="form-control">
+                </div>
+              </div>
+              <div class="d-grid mt-4">
+                <button id="predictBtn" class="btn btn-success btn-lg"> Predict Species </button>
+              </div>
+              <hr>
+              <div id="resultArea" style="display:none">
+                <div class="alert alert-success">
+                  <h4 id="species"></h4>
+                  <p id="confidence"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
 </html>
