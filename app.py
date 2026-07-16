@@ -1,47 +1,95 @@
 from flask import Flask, render_template, request, jsonify
-import pickle
 import numpy as np
+import pickle
+import os
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder="static",
+    template_folder="templates"
+)
 
-with open("knn_model.pkl", "rb") as f:
+# ======================================================
+# Load Model (sekali saja saat aplikasi dijalankan)
+# ======================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "knn_model.pkl")
+
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
-species = {
+# Label kelas
+SPECIES = {
     0: "Iris Setosa",
     1: "Iris Versicolor",
     2: "Iris Virginica"
 }
 
+
+# ======================================================
+# Home
+# ======================================================
+
 @app.route("/")
-def home():
+def index():
     return render_template("index.html")
 
+
+# ======================================================
+# Prediction API
+# ======================================================
 
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    data = request.get_json()
+    try:
+        data = request.get_json()
 
-    features = np.array([[
-        float(data["sepal_length"]),
-        float(data["sepal_width"]),
-        float(data["petal_length"]),
-        float(data["petal_width"])
-    ]])
+        features = np.array([[
+            float(data["sepal_length"]),
+            float(data["sepal_width"]),
+            float(data["petal_length"]),
+            float(data["petal_width"])
+        ]])
 
-    pred = model.predict(features)[0]
+        prediction = model.predict(features)[0]
 
-    if hasattr(model, "predict_proba"):
-        prob = model.predict_proba(features)[0].max() * 100
-    else:
-        prob = None
+        confidence = None
 
+        if hasattr(model, "predict_proba"):
+            probability = model.predict_proba(features)[0]
+            confidence = round(np.max(probability) * 100, 2)
+
+        return jsonify({
+            "success": True,
+            "species": SPECIES[int(prediction)],
+            "confidence": confidence
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 500
+
+
+# ======================================================
+# Health Check
+# ======================================================
+
+@app.route("/health")
+def health():
     return jsonify({
-        "species": species[int(pred)],
-        "confidence": round(prob,2) if prob else None
+        "status": "ok",
+        "model": "loaded"
     })
 
 
+# ======================================================
+# Local Development Only
+# ======================================================
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
