@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="id">
+<head>
     <meta charset="UTF-8">
-    <title>Iris Species Prediction</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
-  <body>
-    <div class="container py-5">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow-lg border-0">
-            <div class="card-header text-center bg-success text-white">
-              <h2>🌸 Iris Flower Prediction</h2>
-              <p class="mb-0"> Machine Learning - KNN Classifier </p>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <label>Sepal Length</label>
-                  <input id="sl" class="form-control">
-                </div>
-                <div class="col-md-6">
-                  <label>Sepal Width</label>
-                  <input id="sw" class="form-control">
-                </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-md-6">
-                  <label>Petal Length</label>
-                  <input id="pl" class="form-control">
-                </div>
-                <div class="col-md-6">
-                  <label>Petal Width</label>
-                  <input id="pw" class="form-control">
-                </div>
-              </div>
-              <div class="d-grid mt-4">
-                <button id="predictBtn" class="btn btn-success btn-lg"> Predict Species </button>
-              </div>
-              <hr>
-              <div id="resultArea" style="display:none">
-                <div class="alert alert-success">
-                  <h4 id="species"></h4>
-                  <p id="confidence"></p>
-                </div>
-              </div>
-            </div>
-          </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Spesies Bunga Iris</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .result { margin-top: 20px; padding: 15px; background-color: #e9ecef; border-radius: 5px; text-align: center; font-size: 18px; font-weight: bold; color: #333; }
+        .error { color: red; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Prediksi Bunga Iris</h2>
+    <form action="/predict" method="POST">
+        <div class="form-group">
+            <label for="SepalLengthCm">Sepal Length (cm)</label>
+            <input type="number" step="0.1" name="SepalLengthCm" id="SepalLengthCm" required>
         </div>
-      </div>
-    </div>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
-  </body>
+        <div class="form-group">
+            <label for="SepalWidthCm">Sepal Width (cm)</label>
+            <input type="number" step="0.1" name="SepalWidthCm" id="SepalWidthCm" required>
+        </div>
+        <div class="form-group">
+            <label for="PetalLengthCm">Petal Length (cm)</label>
+            <input type="number" step="0.1" name="PetalLengthCm" id="PetalLengthCm" required>
+        </div>
+        <div class="form-group">
+            <label for="PetalWidthCm">Petal Width (cm)</label>
+            <input type="number" step="0.1" name="PetalWidthCm" id="PetalWidthCm" required>
+        </div>
+        <button type="submit">Prediksi</button>
+    </form>
+
+    {% if prediction %}
+        <div class="result">
+            Hasil Prediksi: <span style="color: #007bff;">{{ prediction }}</span>
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            Terjadi Kesalahan: {{ error }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
 </html>
